@@ -342,11 +342,8 @@ if st.session_state.stage == 0:
         系统已上线<br>
         加载记忆数据库...<br><br>
 
-        身份确认:<br>
-        用户名 : 爸爸<br><br>
-
-        访问级别 :<br>
-        最高级<br><br>
+        身份确认:爸爸<br>
+        访问级别 :最高级<br><br>
 
         正在解密文件...<br>
         [系统提示] 检测到加密回忆文件，需进行身份验证<br>
@@ -392,7 +389,7 @@ elif st.session_state.stage == 2:
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         try:
-            st.image("childhood.jpg", caption="那时的我还在你肩头", use_container_width=True)
+            st.image("childhood.jpg", use_container_width=True)
         except:
             st.caption("（请上传 childhood.jpg）")
     
@@ -538,53 +535,44 @@ elif st.session_state.stage == 5:
             st.session_state.stage = 6
             st.rerun()
 
-# 环节 6：最终告白
 elif st.session_state.stage == 6:
     st.write("我知道你的答案。因为你在我心里，也一直都是那个超人爸爸！")
+    st.write(" ")
 
-    col1, col2, col3 = st.columns([1, 3, 1])
-    with col2:
+    # 【横向并排修改】将比例设为 4:5，让右侧的文本框有足够宽度展示信件
+    col1, col2 = st.columns([4, 5])
+    
+    with col1:
         try:
             st.image("family.jpg", caption="永远的避风港", use_container_width=True)
         except:
             st.caption("（请上传 family.jpg）")
 
-    try:
-        st.audio("voice.mp3")
-    except:
-        st.warning("（这里会播放音频，请确保已上传 voice.mp3）")
+    with col2:
+        # 【嵌套：声音条置于文本框上方】
+        try:
+            st.audio("voice.mp3")
+        except:
+            st.warning("（这里会播放音频，请确保已上传 voice.mp3）")
+            
+        # 文本框紧跟其后
+        st.markdown("""
+        <div class="cyber-box glow" style="margin-top: 15px;">
         
-    st.markdown("---")
-    
-    st.markdown("""
-        <div class="cyber-box glow">
-        
-        <h2 style="text-align:center;">
-        FINAL MESSAGE
-        </h2>
+        <h2 style="text-align:center;">FINAL MESSAGE</h2>
         
         <hr>
         
-        <p style="font-size:20px;line-height:2;">
-        
-        爸爸，父亲节快乐。
-        
-        那些一起走过的路、
-        一起搬过的行李、
-        一起看过的风景，
-        
-        都被存进了我的人生数据库。
-        
-        谢谢你一直以来的守护。
-        
-        在我的世界里，
-        
-        你永远都是等级最高的超级英雄！❤️
-        
+        <p style="font-size:18px; line-height:1.8; margin-top:10px;">
+        爸爸，父亲节快乐呀！<br><br>
+        那些一起走过的路、一起看过的风景，<br><br>
+        都被存进了我的人生数据库。<br><br>
+        在我的世界里，<br>
+        你永远都是等级最高的超级英雄！<br><br>
         </p>
         
         </div>
-        """,unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
     
     st.write(" ")
     if st.button("终止系统进程"):
