@@ -4,7 +4,7 @@ import base64
 import os
 
 # 页面配置
-st.set_page_config(page_title="致老爸的一封信", page_icon="✉️", layout="centered")
+st.set_page_config(page_title="拆礼物", page_icon="✉️", layout="centered")
 
 st.markdown("""
 <style>
@@ -308,24 +308,6 @@ audio{
 </style>
 """, unsafe_allow_html=True)
 
-
-# 注入自动播放的隐藏 BGM (需在用户首次点击后才能突破浏览器限制播放)
-def get_base64_audio(file_path):
-    if os.path.exists(file_path):
-        with open(file_path, "rb") as f:
-            data = f.read()
-        return base64.b64encode(data).decode()
-    return None
-
-audio_b64 = get_base64_audio("bgm.mp3")
-if audio_b64:
-    audio_html = f"""
-        <audio autoplay loop style="display:none;">
-            <source src="data:audio/mp3;base64,{audio_b64}" type="audio/mp3">
-        </audio>
-    """
-    st.markdown(audio_html, unsafe_allow_html=True)
-
 # 初始化进度状态
 if 'stage' not in st.session_state:
     st.session_state.stage = 0
@@ -336,11 +318,11 @@ st.markdown("""
 <div style='text-align:center;margin-top:20px;'>
 
 <h1 style='font-size:42px'>
-MEMORY ARCHIVE
+记忆档案
 </h1>
 
 <p style='letter-spacing:4px'>
-ACCESSING ENCRYPTED FILES...
+正在访问加密文件……
 </p>
 
 </div>
@@ -354,25 +336,23 @@ if st.session_state.stage == 0:
     st.markdown("""
         <div class="terminal-box">
 
-        SYSTEM ONLINE<br><br>
+        系统已上线<br><br>
+        加载记忆数据库...<br><br>
 
-        Loading Memory Database...<br><br>
+        身份确认:<br>
+        用户名 : 爸爸<br><br>
 
-        Identity Confirmed:<br>
-        USER : 爸爸<br><br>
+        访问级别 :<br>
+        最高级<br><br>
 
-        Access Level :<br>
-        HIGHEST<br><br>
-
-        Decrypting Childhood Archive...
+        正在解密文件...<br><br>
+        [系统提示] 检测到加密回忆文件，需进行身份验证<br><br>
+        请将时间轴拨回到我出生的那一年
 
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown("---")
-    st.write("[系统提示] 检测到加密回忆文件，需进行身份验证")
-    
-    year = st.slider("请将时间轴拨回到我出生的那一年：", 2000, 2026, 2020)
+    year = st.slider("", 2000, 2026, 2020)
     
     if st.button("确认"):
         if year == 2004:  
@@ -383,11 +363,22 @@ if st.session_state.stage == 0:
 
 # 环节 1
 elif st.session_state.stage == 1:
-    st.write("拨动时间，好像又回到了小时候……")
-    st.write("和我比赛跑步，却总是故意输给我……")
-    st.write("带着总是生病的我，在医院跑上跑下……")
+    # st.write("拨动时间，好像又回到了小时候……")
+    # st.write("和我比赛跑步，却总是故意输给我……")
+    # st.write("带着总是生病的我，在医院跑上跑下……")
+    st.markdown("""
+        <div class="terminal-box">
+
+        拨动时间，好像又回到了小时候……<br><br>
+                
+        和我比赛跑步，却总是故意输给我……<br><br>
+
+        着总是生病的我，在医院跑上跑下……<br><br>
+
+        </div>
+        """, unsafe_allow_html=True)
     
-    if st.button("翻开记忆相册"):
+    if st.button("提取视觉影像"):
         st.session_state.stage = 2
         st.rerun()
 
@@ -415,7 +406,7 @@ elif st.session_state.stage == 2:
 elif st.session_state.stage == 3:
     st.write("金鸡冠的公鸡~")
 
-    col1, col2, col3 = st.columns([1, 3, 1])
+    col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         try:
             st.image("primary.jpg", use_container_width=True)
@@ -477,9 +468,9 @@ elif st.session_state.stage == 5:
         text_placeholder3 = st.empty()
         
         text_placeholder1.markdown("#### 那是你在雁荡山拍下的满意之作")
-        time.sleep(4) 
+        time.sleep(3) 
         text_placeholder2.markdown("#### 而我，")
-        time.sleep(4)
+        time.sleep(3)
         text_placeholder3.markdown(
             """
             <h2 style="
@@ -511,7 +502,7 @@ elif st.session_state.stage == 5:
         
     st.write(" ")
     ans = st.text_input("（如果我是你的骄傲，请在这里输入“是”）")
-    if st.button("拆开信件的最后"):
+    if st.button("解锁终极核心权限"):
         if "是" in ans or ans != "":
             if "anim_done" in st.session_state:
                 del st.session_state["anim_done"]
@@ -549,9 +540,7 @@ elif st.session_state.stage == 6:
         
         爸爸，父亲节快乐。
         
-        虽然现在我不在你们身边，
-        
-        但那些一起走过的路、
+        那些一起走过的路、
         一起搬过的行李、
         一起看过的风景，
         
@@ -561,9 +550,7 @@ elif st.session_state.stage == 6:
         
         在我的世界里，
         
-        你永远都是等级最高的超级英雄。
-        
-        ❤️
+        你永远都是等级最高的超级英雄！❤️
         
         </p>
         
@@ -571,6 +558,6 @@ elif st.session_state.stage == 6:
         """,unsafe_allow_html=True)
     
     st.write(" ")
-    if st.button("合上信纸"):
+    if st.button("终止系统进程"):
         st.session_state.stage = 0
         st.rerun()
