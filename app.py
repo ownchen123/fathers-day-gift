@@ -6,40 +6,213 @@ import os
 # 页面配置
 st.set_page_config(page_title="致老爸的一封信", page_icon="✉️", layout="centered")
 
-# 温情相册风 CSS
 st.markdown("""
 <style>
-    /* 暖色调信纸背景和深褐色文字 */
-    .stApp { background-color: #FAF3E0; color: #5C4A3D; font-family: '楷体', 'STKaiti', serif; }
-    h1, h2, h3, p, div, label { color: #5C4A3D !important; }
-    
-    /* 弱化输入框的科技感，使其像填空题 */
-    .stTextInput input { 
-        background-color: transparent !important; 
-        color: #8B5A2B !important; 
-        border: none !important; 
-        border-bottom: 2px solid #D4A373 !important; 
-        border-radius: 0px; 
-        text-align: center;
-        font-size: 18px;
-    }
-    .stTextInput input:focus { box-shadow: none !important; border-bottom: 2px solid #A0522D !important; }
-    
-    /* 按钮变成类似火漆印章或旧质感书签 */
-    .stButton button { 
-        background-color: #D4A373 !important; 
-        border: none !important;
-        border-radius: 4px; 
-        width: 100%;
-        transition: 0.3s;
-    }
-    .stButton button p { color: #FFFFFF !important; font-size: 16px !important; letter-spacing: 2px; }
-    .stButton button:hover { background-color: #BC8F8F !important; }
-    
-    /* 滑块颜色 */
-    .stSlider > div > div > div > div { background-color: #D4A373 !important; }
+
+/* =======================
+   Cyber Memory Archive
+   ======================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap');
+
+.stApp{
+    background:
+        radial-gradient(circle at top,#1e2248 0%,#0b1021 45%,#050814 100%);
+    color:#e6f4ff;
+    font-family:'Orbitron',sans-serif;
+}
+
+/* 扫描线 */
+
+.stApp::before{
+    content:"";
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.03),
+            rgba(255,255,255,0.03) 1px,
+            transparent 2px,
+            transparent 4px
+        );
+
+    z-index:999;
+}
+
+/* 标题 */
+
+h1,h2,h3{
+    color:#78d7ff !important;
+    text-shadow:
+        0 0 10px #4fc3ff,
+        0 0 20px #4fc3ff;
+}
+
+p,div,label{
+    color:#dbefff !important;
+}
+
+/* 中央内容区域 */
+
+.block-container{
+    max-width:900px;
+    padding-top:2rem;
+}
+
+/* 卡片 */
+
+[data-testid="stVerticalBlock"]{
+    border-radius:20px;
+}
+
+/* 图片 */
+
+img{
+    border-radius:18px !important;
+
+    border:1px solid rgba(0,255,255,0.35);
+
+    box-shadow:
+        0 0 25px rgba(0,255,255,0.25),
+        inset 0 0 20px rgba(255,255,255,0.05);
+
+    transition:0.4s;
+}
+
+img:hover{
+    transform:scale(1.02);
+}
+
+/* 输入框 */
+
+.stTextInput input{
+
+    background:rgba(255,255,255,0.05)!important;
+
+    border:1px solid rgba(0,255,255,.4)!important;
+
+    border-radius:12px!important;
+
+    color:white!important;
+
+    text-align:center;
+
+    font-size:18px;
+
+    backdrop-filter:blur(8px);
+}
+
+/* Slider */
+
+.stSlider{
+    padding-top:15px;
+}
+
+.stSlider div[data-baseweb="slider"] div{
+    color:#00eaff;
+}
+
+/* 按钮 */
+
+.stButton button{
+
+    background:
+        linear-gradient(
+        135deg,
+        #00c6ff,
+        #0072ff
+        ) !important;
+
+    border:none !important;
+
+    border-radius:14px !important;
+
+    height:55px;
+
+    color:white !important;
+
+    font-weight:600;
+
+    letter-spacing:2px;
+
+    box-shadow:
+        0 0 15px rgba(0,200,255,0.5);
+
+    transition:0.3s;
+}
+
+.stButton button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 0 30px rgba(0,255,255,0.8);
+}
+
+/* 分割线 */
+
+hr{
+    border:none;
+    height:1px;
+    background:linear-gradient(
+        to right,
+        transparent,
+        #00ffff,
+        transparent
+    );
+}
+
+/* Caption */
+
+[data-testid="stCaptionContainer"]{
+    text-align:center;
+    color:#93dfff !important;
+}
+
+/* 音频播放器 */
+
+audio{
+    width:100%;
+}
+
+/* Markdown 信息框 */
+
+.cyber-box{
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(0,255,255,.25);
+
+    border-radius:18px;
+
+    padding:20px;
+
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+        0 0 20px rgba(0,255,255,.15);
+}
+
+/* 闪烁动画 */
+
+@keyframes glow{
+    0%{opacity:.6}
+    50%{opacity:1}
+    100%{opacity:.6}
+}
+
+.glow{
+    animation:glow 2s infinite;
+}
+
 </style>
 """, unsafe_allow_html=True)
+
 
 # 注入自动播放的隐藏 BGM (需在用户首次点击后才能突破浏览器限制播放)
 def get_base64_audio(file_path):
@@ -64,14 +237,36 @@ if 'stage' not in st.session_state:
 
 # ================= 互动信件环节 =================
 
-st.markdown("<h2 style='text-align: center;'>时光慢递 ✉️</h2>", unsafe_allow_html=True)
+st.markdown("""
+<div style='text-align:center;margin-top:20px;'>
+
+<h1 style='font-size:42px'>
+MEMORY ARCHIVE
+</h1>
+
+<p style='letter-spacing:4px'>
+ACCESSING ENCRYPTED FILES...
+</p>
+
+</div>
+""",unsafe_allow_html=True)
 st.markdown("---")
 
 # 环节 0：拉开序幕
 if st.session_state.stage == 0:
-    st.write("Initializing system boot...")
-    st.write("Checking permissions...")
-    st.write("用户身份确认: 爸爸.")
+    st.code("""
+        SYSTEM ONLINE
+        
+        Loading Memory Database...
+        
+        Identity Confirmed:
+        USER : 爸爸
+        
+        Access Level :
+        HIGHEST
+        
+        Decrypting Childhood Archive...
+        """)
     st.markdown("---")
     st.write("[系统提示] 检测到加密回忆文件，需进行身份验证")
     
@@ -219,12 +414,38 @@ elif st.session_state.stage == 6:
     st.markdown("---")
     
     st.markdown("""
-    <div style='background-color:#EEDC82; padding:20px; border-radius:10px; color:#5C4A3D; font-size:18px; line-height:1.8;'>
-    爸爸，父亲节快乐!<br><br>
-    我不在你们身边,记得运动、记得喝水、记得休息，记得开心!<br><br>
-    我永远爱你<br><br>
-    </div>
-    """, unsafe_allow_html=True)
+        <div class="cyber-box">
+        
+        <h2 style="text-align:center;">
+        FINAL MESSAGE
+        </h2>
+        
+        <hr>
+        
+        <p style="font-size:20px;line-height:2;">
+        
+        爸爸，父亲节快乐。
+        
+        虽然现在我不在你们身边，
+        
+        但那些一起走过的路、
+        一起搬过的行李、
+        一起看过的风景，
+        
+        都被存进了我的人生数据库。
+        
+        谢谢你一直以来的守护。
+        
+        在我的世界里，
+        
+        你永远都是等级最高的超级英雄。
+        
+        ❤️
+        
+        </p>
+        
+        </div>
+        """,unsafe_allow_html=True)
     
     st.write(" ")
     if st.button("合上信纸"):
