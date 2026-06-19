@@ -154,6 +154,95 @@ img:hover{
     box-shadow:
         0 0 30px rgba(0,255,255,0.8);
 }
+            
+.terminal-box{
+
+    background:rgba(0,15,35,.75);
+
+    border:1px solid rgba(0,255,255,.3);
+
+    border-radius:20px;
+
+    padding:30px;
+
+    font-family:Consolas,monospace;
+
+    color:#7ee7ff;
+
+    font-size:22px;
+
+    line-height:2;
+
+    box-shadow:
+        0 0 30px rgba(0,255,255,.15);
+
+    backdrop-filter:blur(15px);
+}
+            
+.stApp::after{
+
+    content:"";
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    pointer-events:none;
+
+    background-image:
+      radial-gradient(circle,#00ffff 1px,transparent 1px),
+      radial-gradient(circle,#ffffff 1px,transparent 1px),
+      radial-gradient(circle,#6cf 1px,transparent 1px);
+
+    background-size:
+      180px 180px,
+      260px 260px,
+      320px 320px;
+
+    opacity:.25;
+
+    animation:starsMove 80s linear infinite;
+
+    z-index:-1;
+}
+
+@keyframes starsMove{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(-400px);
+    }
+}
+            
+.hud-panel{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(0,255,255,.05),
+        rgba(0,100,255,.08)
+    );
+
+    border:1px solid rgba(0,255,255,.3);
+
+    border-radius:20px;
+
+    padding:25px;
+
+    backdrop-filter:blur(20px);
+
+    box-shadow:
+        0 0 30px rgba(0,255,255,.15);
+
+    margin-bottom:25px;
+}
 
 /* 分割线 */
 
@@ -184,18 +273,24 @@ audio{
 /* Markdown 信息框 */
 
 .cyber-box{
-    background:rgba(255,255,255,.04);
 
-    border:1px solid rgba(0,255,255,.25);
+    background:
+    linear-gradient(
+        135deg,
+        rgba(0,255,255,.05),
+        rgba(0,80,255,.08)
+    );
 
-    border-radius:18px;
+    border:1px solid rgba(0,255,255,.3);
 
-    padding:20px;
+    border-radius:22px;
 
-    backdrop-filter:blur(12px);
+    padding:35px;
+
+    backdrop-filter:blur(20px);
 
     box-shadow:
-        0 0 20px rgba(0,255,255,.15);
+        0 0 40px rgba(0,255,255,.2);
 }
 
 /* 闪烁动画 */
@@ -254,19 +349,26 @@ st.markdown("---")
 
 # 环节 0：拉开序幕
 if st.session_state.stage == 0:
-    st.code("""
-        SYSTEM ONLINE
-        
-        Loading Memory Database...
-        
-        Identity Confirmed:
-        USER : 爸爸
-        
-        Access Level :
-        HIGHEST
-        
+    
+
+    st.markdown("""
+        <div class="terminal-box">
+
+        SYSTEM ONLINE<br><br>
+
+        Loading Memory Database...<br><br>
+
+        Identity Confirmed:<br>
+        USER : 爸爸<br><br>
+
+        Access Level :<br>
+        HIGHEST<br><br>
+
         Decrypting Childhood Archive...
-        """)
+
+        </div>
+        """, unsafe_allow_html=True)
+    
     st.markdown("---")
     st.write("[系统提示] 检测到加密回忆文件，需进行身份验证")
     
@@ -378,14 +480,35 @@ elif st.session_state.stage == 5:
         time.sleep(4) 
         text_placeholder2.markdown("#### 而我，")
         time.sleep(4)
-        text_placeholder3.markdown("<h3 style='color:#8B0000 !important;'>成为你的骄傲了吗？</h3>", unsafe_allow_html=True)
-        
+        text_placeholder3.markdown(
+            """
+            <h2 style="
+            text-align:center;
+            color:#00ffff;
+            text-shadow:0 0 15px #00ffff;
+            ">
+            成为你的骄傲了吗？
+            </h2>
+            """,
+            unsafe_allow_html=True
+            )
+
         st.session_state.anim_done = True
     else:
         st.markdown("#### 那是你在雁荡山拍下的满意之作")
         st.markdown("#### 而我，")
-        st.markdown("<h3 style='color:#8B0000 !important;'>成为你的骄傲了吗？</h3>", unsafe_allow_html=True)
-    
+        st.markdown(
+            """
+            <h2 style="
+            text-align:center;
+            color:#00ffff;
+            text-shadow:0 0 15px #00ffff;
+            ">
+            成为你的骄傲了吗？
+            </h2>
+            """
+            , unsafe_allow_html=True)
+        
     st.write(" ")
     ans = st.text_input("（如果我是你的骄傲，请在这里输入“是”）")
     if st.button("拆开信件的最后"):
@@ -414,7 +537,7 @@ elif st.session_state.stage == 6:
     st.markdown("---")
     
     st.markdown("""
-        <div class="cyber-box">
+        <div class="cyber-box glow">
         
         <h2 style="text-align:center;">
         FINAL MESSAGE
