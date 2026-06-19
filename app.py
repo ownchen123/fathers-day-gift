@@ -41,7 +41,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 【优化4】将BGM放到页面最顶层，避免每次重绘时从头播放
+# 注入自动播放的隐藏 BGM (需在用户首次点击后才能突破浏览器限制播放)
 def get_base64_audio(file_path):
     if os.path.exists(file_path):
         with open(file_path, "rb") as f:
@@ -57,7 +57,6 @@ if audio_b64:
         </audio>
     """
     st.markdown(audio_html, unsafe_allow_html=True)
-
 
 # 初始化进度状态
 if 'stage' not in st.session_state:
@@ -99,7 +98,6 @@ elif st.session_state.stage == 1:
 elif st.session_state.stage == 2:
     st.write("哈哈哈，小时候的我，还挺可爱的吧")
     
-    # 【优化1】修正上下文管理器报错，并居中缩小图片
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         try:
@@ -120,7 +118,7 @@ elif st.session_state.stage == 2:
 elif st.session_state.stage == 3:
     st.write("金鸡冠的公鸡~")
 
-    col1, col2, col3 = st.columns([1,3,1])
+    col1, col2, col3 = st.columns([1, 3, 1])
     with col2:
         try:
             st.image("primary.jpg", use_container_width=True)
@@ -156,37 +154,39 @@ elif st.session_state.stage == 4:
 
 # 环节 5 (重点动画修复区)
 elif st.session_state.stage == 5:
-    col1, col2 = st.columns([1,1])
+    # 【核心修改点：缩小 solo.jpg】
+    # 将原来的 [1, 1] 等分改为非等分，让右侧 solo.jpg 的列变得更窄
+    col1, col2 = st.columns([3, 2]) 
     with col1:
         try:
             st.image("travel.jpg", use_container_width=True)
         except:
             st.caption("（请上传 travel.jpg ）")
     with col2:
-        try:
-            st.image("solo.jpg", use_container_width=True)
-        except:
-            st.caption("（请上传 solo.jpg 雁荡山照片）")
+        # 【二次缩小与居中】
+        # 在窄列中，再次使用 columns 技巧来居中图片并进一步缩小
+        sub_col1, sub_col2, sub_col3 = st.columns([1, 6, 1]) # 再次缩小居中
+        with sub_col2:
+            try:
+                st.image("solo.jpg", use_container_width=True)
+            except:
+                st.caption("（请上传 solo.jpg 雁荡山照片）")
             
     st.write(" ")
     
-    # 【优化2】借助 st.empty() 实现文字循序渐进出现的动画效果
-    # 只有当这是本阶段第一次加载时才播放动画，防止后续点击报错重演
     if "anim_done" not in st.session_state:
         text_placeholder1 = st.empty()
         text_placeholder2 = st.empty()
         text_placeholder3 = st.empty()
         
         text_placeholder1.markdown("#### 那是你在雁荡山拍下的满意之作")
-        time.sleep(2) 
+        time.sleep(4) 
         text_placeholder2.markdown("#### 而我，")
-        time.sleep(2)
+        time.sleep(4)
         text_placeholder3.markdown("<h3 style='color:#8B0000 !important;'>成为你的骄傲了吗？</h3>", unsafe_allow_html=True)
         
-        # 标记动画已完成
         st.session_state.anim_done = True
     else:
-        # 如果动画已播放过，直接显示静态文字，防止等待重构
         st.markdown("#### 那是你在雁荡山拍下的满意之作")
         st.markdown("#### 而我，")
         st.markdown("<h3 style='color:#8B0000 !important;'>成为你的骄傲了吗？</h3>", unsafe_allow_html=True)
@@ -195,7 +195,6 @@ elif st.session_state.stage == 5:
     ans = st.text_input("（如果我是你的骄傲，请在这里输入“是”）")
     if st.button("拆开信件的最后"):
         if "是" in ans or ans != "":
-            # 进入下一关前清理动画状态
             if "anim_done" in st.session_state:
                 del st.session_state["anim_done"]
             st.session_state.stage = 6
@@ -219,13 +218,11 @@ elif st.session_state.stage == 6:
         
     st.markdown("---")
     
-    # 【优化3】移除导致文字消失的 st.spinner，改为直接渲染排版
     st.markdown("""
     <div style='background-color:#EEDC82; padding:20px; border-radius:10px; color:#5C4A3D; font-size:18px; line-height:1.8;'>
-    爸爸，父亲节快乐。<br><br>
-    也许我不善言辞，也许我离家在外不能天天陪着你，但请你相信，你给予我的爱和底气，足够我勇敢地面对这世界上的任何困难。<br><br>
-    以后，换我来做你和妈妈的依靠。<br>
-    今天什么都别操心了，好好休息。我爱你，老爸。
+    爸爸，父亲节快乐!<br><br>
+    我不在你们身边,记得运动、记得喝水、记得休息，记得开心!<br><br>
+    我永远爱你<br><br>
     </div>
     """, unsafe_allow_html=True)
     
