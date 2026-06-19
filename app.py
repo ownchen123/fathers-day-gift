@@ -4,15 +4,41 @@ import time
 # 页面配置：设置标题和移动端适配
 st.set_page_config(page_title="System Auth", page_icon="💻", layout="centered")
 
-# 注入自定义 CSS，强制全局黑底绿字，模拟复古终端风格
+# 注入自定义 CSS，强制全局黑底绿字，修复按钮和输入框样式
 st.markdown("""
 <style>
+    /* 全局背景与字体 */
     .stApp { background-color: #0c0c0c; color: #00ff00; font-family: 'Courier New', Courier, monospace; }
     h1, h2, h3, p, div, label { color: #00ff00 !important; font-family: 'Courier New', Courier, monospace; }
-    .stTextInput input { background-color: #1e1e1e; color: #00ff00; border: 1px solid #00ff00; border-radius: 2px; }
-    .stButton button { background-color: #00ff00; color: #000000; font-weight: bold; border-radius: 4px; border: none; width: 100%;}
-    .stButton button:hover { background-color: #00cc00; color: #ffffff; }
-    .stAudio { filter: sepia(20%) hue-rotate(90deg) saturate(300%); } /* 让音频播放器也带点复古绿滤镜 */
+    
+    /* 修复输入框：纯黑底色，荧光绿边框和文字 */
+    .stTextInput input { 
+        background-color: #000000 !important; 
+        color: #00ff00 !important; 
+        border: 1px solid #00ff00 !important; 
+        border-radius: 2px; 
+    }
+    .stTextInput input:focus {
+        box-shadow: 0 0 5px #00ff00 !important; /* 选中时加一点绿色发光效果 */
+    }
+    
+    /* 修复按钮：纯绿背景，纯黑文字 */
+    .stButton button { 
+        background-color: #00ff00 !important; 
+        border: 1px solid #00ff00 !important;
+        border-radius: 4px; 
+        width: 100%;
+    }
+    /* 强制按钮内部的文字变成黑色 */
+    .stButton button p { 
+        color: #000000 !important; 
+        font-weight: bold !important;
+    }
+    /* 鼠标悬停时的效果 */
+    .stButton button:hover { 
+        background-color: #00cc00 !important; 
+        border-color: #00cc00 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
