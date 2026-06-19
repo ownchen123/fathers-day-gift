@@ -119,6 +119,14 @@ elif st.session_state.stage == 2:
 # 环节 3
 elif st.session_state.stage == 3:
     st.write("金鸡冠的公鸡~")
+
+    col1, col2, col3 = st.columns([1,3,1])
+    with col2:
+        try:
+            st.image("primary.jpg", use_container_width=True)
+        except:
+            st.caption("（请上传 primary.jpg）")
+            
     st.write("竟然一晃又是12年过去了，那天，是我的19岁生日……")
     
     year = st.slider("请将时间轴拨到上大学的那年：", 2000, 2026, 2020)
