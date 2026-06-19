@@ -90,22 +90,25 @@ img:hover{
 }
 
 /* 输入框 */
+.stTextInput > div > div > div {
+    background-color: transparent !important;
+}
 
-.stTextInput input{
+.stTextInput div[data-baseweb="input"], 
+.stTextInput div[data-baseweb="base-input"],
+.stTextInput input {
+    background-color: rgba(5, 15, 35, 0.7) !important; /* 深邃的赛博蓝黑底色 */
+    border: 1px solid rgba(0, 255, 255, 0.4) !important;
+    color: #00ffff !important;
+    border-radius: 8px !important;
+    text-align: center;
+    font-size: 18px;
+    box-shadow: none !important;
+}
 
-    background:rgba(255,255,255,0.05)!important;
-
-    border:1px solid rgba(0,255,255,.4)!important;
-
-    border-radius:12px!important;
-
-    color:white!important;
-
-    text-align:center;
-
-    font-size:18px;
-
-    backdrop-filter:blur(8px);
+.stTextInput div[data-baseweb="input"]:focus-within {
+    border-color: #00ffff !important;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5) !important; /* 聚焦时发光 */
 }
 
 /* Slider */
@@ -336,7 +339,7 @@ if st.session_state.stage == 0:
     st.markdown("""
         <div class="terminal-box">
 
-        系统已上线<br><br>
+        系统已上线<br>
         加载记忆数据库...<br><br>
 
         身份确认:<br>
@@ -345,8 +348,8 @@ if st.session_state.stage == 0:
         访问级别 :<br>
         最高级<br><br>
 
-        正在解密文件...<br><br>
-        [系统提示] 检测到加密回忆文件，需进行身份验证<br><br>
+        正在解密文件...<br>
+        [系统提示] 检测到加密回忆文件，需进行身份验证<br>
         请将时间轴拨回到我出生的那一年
 
         </div>
@@ -373,7 +376,7 @@ elif st.session_state.stage == 1:
                 
         和我比赛跑步，却总是故意输给我……<br><br>
 
-        着总是生病的我，在医院跑上跑下……<br><br>
+        带着总是生病的我，在医院跑上跑下……<br>
 
         </div>
         """, unsafe_allow_html=True)
@@ -434,8 +437,7 @@ elif st.session_state.stage == 4:
         except:
             st.caption("（请上传 college.jpg）")
     
-    ans2 = st.text_input("> 后来，我们也走过很多地方……")
-    
+    st.write("> 后来，我们也走过很多地方……")
     if st.button("继续旅程 ↵"):
         st.session_state.stage = 5
         st.rerun()
@@ -467,38 +469,65 @@ elif st.session_state.stage == 5:
         text_placeholder2 = st.empty()
         text_placeholder3 = st.empty()
         
-        text_placeholder1.markdown("#### 那是你在雁荡山拍下的满意之作")
-        time.sleep(3) 
-        text_placeholder2.markdown("#### 而我，")
-        time.sleep(3)
+        # --- 打字机效果 1 ---
+        text1 = "那是你在雁荡山拍下的满意之作"
+        current_text1 = ""
+        for char in text1:
+            current_text1 += char
+            # 加上 █ 光标，更有终端敲击感
+            text_placeholder1.markdown(f"#### {current_text1}█")
+            time.sleep(0.08) # 敲击间隔
+        text_placeholder1.markdown(f"#### {text1}") # 敲完后移除光标
+        time.sleep(0.5) 
+        
+        # --- 打字机效果 2 ---
+        text2 = "而我，"
+        current_text2 = ""
+        for char in text2:
+            current_text2 += char
+            text_placeholder2.markdown(f"#### {current_text2}█")
+            time.sleep(0.15) # 稍微放慢节奏，营造停顿感
+        text_placeholder2.markdown(f"#### {text2}")
+        time.sleep(0.8)
+        
+        # --- 打字机效果 3 (带发光特效) ---
+        text3 = "成为你的骄傲了吗？"
+        current_text3 = ""
+        for i in range(1, len(text3) + 1):
+            current_text3 = text3[:i]
+            text_placeholder3.markdown(
+                f"""
+                <h2 style="text-align:center; color:#00ffff; text-shadow:0 0 15px #00ffff;">
+                {current_text3}█
+                </h2>
+                """,
+                unsafe_allow_html=True
+            )
+            time.sleep(0.18) # 终极提问，逐字重击
+
+        # 最终定格状态，移除光标
         text_placeholder3.markdown(
             """
-            <h2 style="
-            text-align:center;
-            color:#00ffff;
-            text-shadow:0 0 15px #00ffff;
-            ">
+            <h2 style="text-align:center; color:#00ffff; text-shadow:0 0 15px #00ffff;">
             成为你的骄傲了吗？
             </h2>
             """,
             unsafe_allow_html=True
-            )
+        )
 
         st.session_state.anim_done = True
     else:
+        # 如果老爸重新加载页面，直接显示最终状态，不再重复打字动画
         st.markdown("#### 那是你在雁荡山拍下的满意之作")
         st.markdown("#### 而我，")
         st.markdown(
             """
-            <h2 style="
-            text-align:center;
-            color:#00ffff;
-            text-shadow:0 0 15px #00ffff;
-            ">
+            <h2 style="text-align:center; color:#00ffff; text-shadow:0 0 15px #00ffff;">
             成为你的骄傲了吗？
             </h2>
-            """
-            , unsafe_allow_html=True)
+            """, 
+            unsafe_allow_html=True
+        )
         
     st.write(" ")
     ans = st.text_input("（如果我是你的骄傲，请在这里输入“是”）")
