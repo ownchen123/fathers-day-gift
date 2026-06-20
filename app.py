@@ -574,9 +574,9 @@ elif st.session_state.stage == 6:
         
         <h2 style="text-align:center;">TO DAD：</h2>
         
-        # <hr>
+        <hr>
         
-        <p style="font-size:18px; line-height:1.8; margin-top:10px;">
+        <p style="font-size:18px; line-height:1.8; margin-top:5px;">
         爸爸，父亲节快乐呀！<br>
         那些过去的点点滴滴，<br>
         都被存进了我的人生数据库。<br>
