@@ -420,11 +420,11 @@ elif st.session_state.stage == 3:
             
     st.markdown("""
         <div class="terminal-box">
-        竟然一晃又是12年过去了，那天，是我的19岁生日……
+        竟然一眨眼，又是12年……
         </div>
         """, unsafe_allow_html=True)
     
-    year = st.slider("请将时间轴拨到上大学的那年：", 2000, 2026, 2020)
+    year = st.slider("请将时间轴拨到我上大学的那年：", 2000, 2026, 2020)
     if st.button("确认"):
         if year == 2023:  
             st.session_state.stage = 4
@@ -577,11 +577,11 @@ elif st.session_state.stage == 6:
         <hr>
         
         <p style="font-size:18px; line-height:1.8; margin-top:10px;">
-        爸爸，父亲节快乐呀！<br><br>
-        那些一起走过的路、一起看过的风景，<br><br>
-        都被存进了我的人生数据库。<br><br>
+        爸爸，父亲节快乐呀！<br>
+        那些过去的点点滴滴，<br>
+        都被存进了我的人生数据库。<br>
         在我的世界里，<br>
-        你永远都是等级最高的超级英雄！<br><br>
+        你永远都是我的超级英雄！<br>
         </p>
         
         </div>
