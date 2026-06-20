@@ -572,7 +572,7 @@ elif st.session_state.stage == 6:
         st.markdown("""
         <div class="cyber-box glow" style="margin-top: 15px;">
         
-        <h2 style="text-align:center;">FINAL MESSAGE</h2>
+        <h2 style="text-align:center;">TO DAD：</h2>
         
         <hr>
         
